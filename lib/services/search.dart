@@ -28,7 +28,7 @@ class Search {
                   actionsIconTheme: IconThemeData(color: blackColor))),
           // onQueryUpdate: (s) => print(s),
           items: products,
-          searchLabel: 'Search cars, mobiles, properties...',
+          searchLabel: 'Search snacks, Tshirts, etc...',
           suggestion: const SingleChildScrollView(child: ProductListing()),
           failure: const Center(
             child: Text('No product found, Please check and try again..'),
