@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "470516067456",
+    "project_id": "icd-kaa-olx",
+    "storage_bucket": "icd-kaa-olx.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:470516067456:android:14ccf712bbd87595614a65",
+        "android_client_info": {
+          "package_name": "com.example.icd_kaa_olx"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "470516067456-mceffh4s643qbloseos47bkqdpidqt0b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDENty3oR_jN80dr5gU0Y1pR4PkmfxuzEI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "470516067456-mceffh4s643qbloseos47bkqdpidqt0b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
