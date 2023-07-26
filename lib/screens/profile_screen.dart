@@ -7,6 +7,7 @@ import '../constants/colors.dart';
 import '../constants/widgets.dart';
 // ignore: unused_import
 import '../services/get_imgurl_from_storage.dart';
+import '../services/user.dart';
 
 class ProfileScreen extends StatefulWidget {
   static const screenId = 'profile_screen';
@@ -16,7 +17,8 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-User? user = FirebaseAuth.instance.currentUser;
+// User? user = FirebaseAuth.instance.currentUser;
+UserService firebaseUser = UserService();
 
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
@@ -29,14 +31,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             SizedBox(height: screenHeight(context) * 0.2),
             Text(
-              "${user!.email} is currentUser",
+              "${firebaseUser.user!.email} is currentUser",
               style: TextStyle(color: whiteColor),
             ),
             Text(
-              "${user!.emailVerified} is emailVerified",
+              "${firebaseUser.user!.emailVerified} is emailVerified",
               style: TextStyle(color: whiteColor),
             ),
-            // Text("${user!.uid} is hiis uid"),
             ElevatedButton(
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(secondaryColor),

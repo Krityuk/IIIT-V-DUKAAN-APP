@@ -82,8 +82,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   borderRadius: BorderRadius.circular(40)),
               padding: const EdgeInsets.all(10),
               child: Icon(
-                Icons.home,
+                _index == 0 ? CupertinoIcons.house_fill : CupertinoIcons.home,
                 color: _index == 0 ? purpleColor : disabledColor,
+                size: 30,
               ),
             ),
           ),
@@ -94,7 +95,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   borderRadius: BorderRadius.circular(40)),
               padding: const EdgeInsets.all(10),
               child: Icon(
-                Icons.chat,
+                _index == 1 ? Icons.chat : Icons.chat_outlined,
                 color: _index == 1 ? purpleColor : disabledColor,
               ),
             ),
@@ -106,6 +107,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   borderRadius: BorderRadius.circular(40)),
               padding: const EdgeInsets.all(10),
               child: Icon(
+                size: 30,
                 Icons.add,
                 color: _index == 2 ? purpleColor : disabledColor,
               ),
@@ -132,6 +134,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
               child: Icon(
                 CupertinoIcons.person_alt,
                 color: _index == 4 ? purpleColor : disabledColor,
+                size: 30,
               ),
             ),
           ),

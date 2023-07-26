@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:icd_kaa_olx/constants/widgets.dart';
+import 'package:icd_kaa_olx/screens/main_navigation_screen.dart';
 import 'package:icd_kaa_olx/services/get_imgurl_from_storage.dart';
 import 'package:intl/intl.dart';
 // import 'package:map_launcher/map_launcher.dart' as launcher;
@@ -487,8 +488,9 @@ class _ProductDetailState extends State<ProductDetail> {
         padding: const EdgeInsets.all(16),
         child: (productProvider.productData!['seller_uid'] ==
                 firebaseUser.user!.uid)
-            ? myDeleteButton(
-                productProvider) //if seller & purchaser are same then showing delete this item button, else showing chat&call buttons
+            ? myDeleteButton(productProvider)
+            // ? const Text('DELETE BUTTON')
+            //if seller & purchaser are same then showing delete this item button, else showing chat&call buttons
             : Row(children: [
                 Expanded(
                   child: ElevatedButton(
@@ -571,51 +573,54 @@ class _ProductDetailState extends State<ProductDetail> {
     var date = DateTime.fromMicrosecondsSinceEpoch(data['posted_at']);
     var formattedDate = DateFormat.yMMMd().format(date);
     // GeoPoint location = productProvider.sellerDetails!['location'];
+    //*********************************************************************** */
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: whiteColor,
-          elevation: 0,
-          iconTheme: IconThemeData(color: blackColor),
-          title: Text(
-            'Product Details',
-            style: TextStyle(color: blackColor),
-          ),
-          actions: [
-            IconButton(
-              icon: Icon(
-                Icons.share_outlined,
-                color: blackColor,
-              ),
-              onPressed: () {},
-            ),
-            IconButton(
-                onPressed: () {
-                  setState(() {
-                    isLiked = !isLiked;
-                  });
-                  firebaseUser.updateFavourite(
-                    context: context,
-                    isLiked: isLiked,
-                    productId: data.id,
-                  );
-                },
-                color: isLiked ? secondaryColor : disabledColor,
-                icon: Icon(
-                  isLiked ? CupertinoIcons.heart_fill : CupertinoIcons.heart,
-                ))
-          ],
+      appBar: AppBar(
+        backgroundColor: whiteColor,
+        elevation: 0,
+        iconTheme: IconThemeData(color: blackColor),
+        title: Text(
+          'Product Details',
+          style: TextStyle(color: blackColor),
         ),
-        body: _body(
-            data: data,
-            formattedDate: formattedDate,
-            productProvider: productProvider,
-            formattedPrice: formattedPrice,
-            // location: location,
-            numberFormat: numberFormat),
-        bottomSheet:
-            _loading ? null : _bottomWidget(productProvider: productProvider));
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.share_outlined,
+              color: blackColor,
+            ),
+            onPressed: () {},
+          ),
+          IconButton(
+              onPressed: () {
+                setState(() {
+                  isLiked = !isLiked;
+                });
+                firebaseUser.updateFavourite(
+                  context: context,
+                  isLiked: isLiked,
+                  productId: data.id,
+                );
+              },
+              color: isLiked ? secondaryColor : disabledColor,
+              icon: Icon(
+                isLiked ? CupertinoIcons.heart_fill : CupertinoIcons.heart,
+              ))
+        ],
+      ),
+      body: _body(
+          data: data,
+          formattedDate: formattedDate,
+          productProvider: productProvider,
+          formattedPrice: formattedPrice,
+          // location: location,
+          numberFormat: numberFormat),
+      bottomNavigationBar:
+          _loading ? null : _bottomWidget(productProvider: productProvider),
+    );
   }
 
+//*************************************************************************** */
   deleteItemDialog(ProductProvider productProvider) {
     return showDialog(
         context: context,
@@ -662,6 +667,8 @@ class _ProductDetailState extends State<ProductDetail> {
                         onPressed: () async {
                           loadingDialogBox(context, 'Deleting this product');
                           await _deleteProduct(productProvider);
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              MainNavigationScreen.screenId, (route) => false);
                         },
                         child: const Text(
                           'Confirm',
@@ -676,34 +683,33 @@ class _ProductDetailState extends State<ProductDetail> {
         });
   }
 
+//*************************************************************************** */
   Widget myDeleteButton(ProductProvider productProvider) {
-    return Expanded(
-      child: ElevatedButton(
-          style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(secondaryColor)),
-          onPressed: () async {
-            await deleteItemDialog(productProvider);
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.delete,
-                  size: 16,
-                  color: redColor,
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                const Text(
-                  'Delete',
-                )
-              ],
-            ),
-          )),
-    );
+    // return const Text('DELETE BUTTON');
+    return ElevatedButton(
+        style: ElevatedButton.styleFrom(backgroundColor: secondaryColor),
+        onPressed: () async {
+          await deleteItemDialog(productProvider);
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.delete,
+                size: 16,
+                color: redColor,
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              const Text(
+                'Delete',
+              )
+            ],
+          ),
+        ));
   }
 
   _deleteProduct(ProductProvider productProvider) async {
