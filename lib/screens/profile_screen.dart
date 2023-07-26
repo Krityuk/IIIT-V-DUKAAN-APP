@@ -17,12 +17,10 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-// User? user = FirebaseAuth.instance.currentUser;
-UserService firebaseUser = UserService();
-
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
+    UserService firebaseUser = UserService();
     return Scaffold(
       backgroundColor: blackColor,
       body: Center(
