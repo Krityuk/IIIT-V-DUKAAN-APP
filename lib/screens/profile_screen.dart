@@ -29,7 +29,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             SizedBox(height: screenHeight(context) * 0.2),
             Text(
-              "${firebaseUser.user!.email} is currentUser",
+              "${firebaseUser.user!.email} is your 1st account",
               style: TextStyle(color: whiteColor),
             ),
             Text(

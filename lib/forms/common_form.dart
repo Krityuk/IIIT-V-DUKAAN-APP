@@ -199,20 +199,20 @@ class _CommonFormState extends State<CommonForm> {
                 ),
                 TextFormField(
                     // web me ek dikkat thi yaha ki input me sirf number dene hote h but yaha laptop ka keyboard se string bhi chala jata so kIsWeb meye onchanged dena pada
+                    // app me bhi yehi dikkat thi, ki user comma ya fullstop type krde rhe the users,to database chud ja rha tha kyuki sirf 0-9 hona h idhar
                     onChanged: (value) {
-                      if (kIsWeb) {
-                        final selection = _priceController.selection;
-                        final from = RegExp(r'[^0-9]');
-                        // Regular expression to match non-numeric characters
-                        final price = value.replaceAll(from, '');
-                        // Replace non-numeric characters with an empty string
-                        _priceController.value =
-                            _priceController.value.copyWith(
-                          text: price,
-                          selection: TextSelection.collapsed(
-                              offset: selection.baseOffset),
-                        );
-                      }
+                      // if (kIsWeb) {
+                      final selection = _priceController.selection;
+                      final from = RegExp(r'[^0-9]');
+                      // Regular expression to match non-numeric characters
+                      final price = value.replaceAll(from, '');
+                      // Replace non-numeric characters with an empty string
+                      _priceController.value = _priceController.value.copyWith(
+                        text: price,
+                        selection: TextSelection.collapsed(
+                            offset: selection.baseOffset),
+                      );
+                      // }
                     },
                     controller: _priceController,
                     focusNode: _priceNode,
