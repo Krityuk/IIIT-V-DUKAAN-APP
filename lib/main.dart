@@ -1,15 +1,14 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:icd_kaa_olx/forms/common_form.dart';
-import 'package:icd_kaa_olx/forms/user_review_form.dart';
-import 'package:icd_kaa_olx/screens/category/product_by_category_screen.dart';
-import 'package:icd_kaa_olx/screens/chat/user_chat_screen.dart';
-import 'package:icd_kaa_olx/screens/product/product_details_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
+
 
 import 'package:icd_kaa_olx/constants/colors.dart';
 import 'package:icd_kaa_olx/firebase_options.dart';
+import 'package:icd_kaa_olx/forms/common_form.dart';
+import 'package:icd_kaa_olx/forms/user_review_form.dart';
 import 'package:icd_kaa_olx/provider/category_provider.dart';
 import 'package:icd_kaa_olx/provider/product_provider.dart';
 import 'package:icd_kaa_olx/screens/auth/email_verify_screen.dart';
@@ -17,11 +16,14 @@ import 'package:icd_kaa_olx/screens/auth/login_screen.dart';
 import 'package:icd_kaa_olx/screens/auth/registerscreen.dart';
 import 'package:icd_kaa_olx/screens/auth/reset_password_screen.dart';
 import 'package:icd_kaa_olx/screens/category/category_list_screen.dart';
+import 'package:icd_kaa_olx/screens/category/product_by_category_screen.dart';
 import 'package:icd_kaa_olx/screens/chat/chat_screen.dart';
+import 'package:icd_kaa_olx/screens/chat/user_chat_screen.dart';
 import 'package:icd_kaa_olx/screens/home_screen.dart';
 import 'package:icd_kaa_olx/screens/location_screen.dart';
 import 'package:icd_kaa_olx/screens/main_navigation_screen.dart';
 import 'package:icd_kaa_olx/screens/posts/my_post_screen.dart';
+import 'package:icd_kaa_olx/screens/product/product_details_screen.dart';
 import 'package:icd_kaa_olx/screens/profile_screen.dart';
 import 'package:icd_kaa_olx/screens/splash_screen.dart';
 import 'package:icd_kaa_olx/screens/welcome_screen.dart';
@@ -31,9 +33,11 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  // await FirebaseAppCheck.instance.activate(//this protects from spamss and bots
-  //   webRecaptchaSiteKey: 'recaptcha-v3-site-key'
-  // );
+  await FirebaseAppCheck.instance.activate(//this protects storage from spams and bots
+    // webRecaptchaSiteKey: 'recaptcha-v3-site-key'
+    //Replacing 'recaptcha-v3-site-key' with your actual reCAPTCHA v3 site keyis optional
+    // if i dont create and my own recaptcha key then firebase would be using its default firebase protection
+  );
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
       create: (_) => CategoryProvider(),
