@@ -1,8 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:galleryimage/galleryimage.dart';
-import 'package:icd_kaa_olx/forms/user_review_form.dart';
 import 'package:provider/provider.dart';
+
+import 'package:icd_kaa_olx/forms/user_review_form.dart';
 
 import '../components/common_form_ka_bottom_nav_widget.dart';
 import '../components/image_picker_widget.dart';
@@ -173,7 +174,7 @@ class _CommonFormState extends State<CommonForm> {
                 TextFormField(
                     controller: _descriptionController,
                     focusNode: _descriptionNode,
-                    maxLength: 50,
+                    maxLength: 200,
                     validator: (value) {
                       return checkNullEmptyValidation(
                           value, 'product description');

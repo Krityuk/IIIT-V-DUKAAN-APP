@@ -29,12 +29,11 @@ class myCustomIconButton extends StatelessWidget {
         color: bgColor,
         elevation: 2,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        margin: const EdgeInsets.symmetric(horizontal: 30),
+        // margin: const EdgeInsets.symmetric(horizontal: 30),
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 600),
           child: Padding(
-            padding: padding ??
-                const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+            padding: padding ?? const EdgeInsets.all(8),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,

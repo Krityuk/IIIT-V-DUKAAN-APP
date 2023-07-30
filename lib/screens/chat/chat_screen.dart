@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:icd_kaa_olx/screens/chat/chat_card.dart';
 
@@ -27,12 +28,11 @@ class _ChatScreenState extends State<ChatScreen> {
       child: Scaffold(
         backgroundColor: greyColor,
         appBar: AppBar(
+            toolbarHeight: kIsWeb ? screenHeight(context) * 0.115 : null,
             backgroundColor: blackColor,
             title: Text(
               'Chats',
-              style: TextStyle(
-                color: redColor,
-              ),
+              style: TextStyle(color: redColor, fontFamily: 'Times'),
             ),
             bottom: _bottomBar()),
         body: _body(

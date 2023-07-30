@@ -22,21 +22,26 @@ class _SignUpButtonsState extends State<SignUpButtons> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        InkWell(
-          onTap: () {
-            // Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //         builder: (builder) => const PhoneAuthScreen(
-            //               isFromLogin: false,
-            //             )));
-          },
-          child: myCustomIconButton(
-            text: 'Signup with Phone',
-            imageIcon: 'assets/icons/phone.png',
-            bgColor: greyColor,
-            imageOrIconColor: whiteColor,
-            imageOrIconRadius: 20,
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 30),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15), color: whiteColor),
+          child: InkWell(
+            onTap: () {
+              // Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //         builder: (builder) => const PhoneAuthScreen(
+              //               isFromLogin: false,
+              //             )));
+            },
+            child: myCustomIconButton(
+              text: 'Signup with Phone',
+              imageIcon: 'assets/icons/phone.png',
+              bgColor: greyColor,
+              imageOrIconColor: whiteColor,
+              imageOrIconRadius: 20,
+            ),
           ),
         ),
 //******************************************************************************************* */
@@ -44,18 +49,24 @@ class _SignUpButtonsState extends State<SignUpButtons> {
           height: 10,
         ),
 //******************************************************************************************* */
-        InkWell(
-          onTap: () async {
-            User? user = await myAuthService.signInWithGoogle(context: context);
-            if (user != null) {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  MainNavigationScreen.screenId, (route) => false);
-            }
-          },
-          child: myCustomIconButton(
-            text: 'Signup with Google',
-            imageIcon: 'assets/icons/google.png',
-            bgColor: whiteColor,
+        Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15), color: whiteColor),
+          margin: const EdgeInsets.symmetric(horizontal: 30),
+          child: InkWell(
+            onTap: () async {
+              User? user =
+                  await myAuthService.signInWithGoogle(context: context);
+              if (user != null) {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    MainNavigationScreen.screenId, (route) => false);
+              }
+            },
+            child: myCustomIconButton(
+              text: 'Signup with Google',
+              imageIcon: 'assets/icons/google.png',
+              bgColor: whiteColor,
+            ),
           ),
         ),
         const SizedBox(

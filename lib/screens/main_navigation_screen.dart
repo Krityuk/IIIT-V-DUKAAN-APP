@@ -33,26 +33,322 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        extendBody: true,
-        body: PageView.builder(
-            itemCount: pages.length,
-            controller: controller,
-            onPageChanged: (page) {
-              setState(() {
-                _index = page;
-              });
-            },
-            itemBuilder: (context, index) {
-              return pages[index];
-            }),
-        bottomNavigationBar: kIsWeb
-            ? _bottomNavigationBar()
-            : FittedBox(child: _bottomNavigationBar()));
+      drawer: _sideBar(),
+      extendBody: true,
+      body: kIsWeb
+          ? Row(
+              children: [
+                SizedBox(
+                    width: screenWidth(context) * 0.25,
+                    height: screenHeight(context),
+                    child: Container(
+                        decoration: BoxDecoration(color: blackColor),
+                        child: myListViewWidgetForWeb())),
+                SizedBox(
+                  width: screenWidth(context) * 0.75,
+                  height: screenHeight(context),
+                  child: PageView.builder(
+                      itemCount: pages.length,
+                      controller: controller,
+                      onPageChanged: (page) {
+                        setState(() {
+                          _index = page;
+                        });
+                      },
+                      itemBuilder: (context, index) {
+                        return pages[index];
+                      }),
+                ),
+              ],
+            )
+          : PageView.builder(
+              itemCount: pages.length,
+              controller: controller,
+              onPageChanged: (page) {
+                setState(() {
+                  _index = page;
+                });
+              },
+              itemBuilder: (context, index) {
+                return pages[index];
+              }),
+      bottomNavigationBar:
+          kIsWeb ? null : FittedBox(child: _bottomNavigationBar()),
+    );
     // android me fitted box diya but web me fitted box nai diya kyuki isse bottom nav bar boht bada ho ja rha tha in web
   }
-//NOTE "import 'package:dot_navigation_bar/dot_navigation_bar.dart';" USED HERE
-//THAT IS  DotNavigationBar and PAgeView.Builder is used here
+
+// NOTE "import 'package:dot_navigation_bar/dot_navigation_bar.dart';" USED HERE
+// THAT IS  DotNavigationBar and PAgeView.Builder is used here
 // AND these two are connected via setState of DotNavigationBar
+  Widget _sideBar() {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          DrawerHeader(
+            decoration: BoxDecoration(color: blackColor),
+            child: Center(
+              child: Row(
+                children: [
+                  Text(
+                    'ICD DUKAAN',
+                    style: TextStyle(
+                        color: whiteColor,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Times'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          ListTile(
+            leading: Icon(
+              CupertinoIcons.house_fill,
+              color: _index == 0 ? purpleColor : disabledColor,
+              size: 30,
+            ),
+            title: Text(
+              'Home',
+              style:
+                  TextStyle(color: _index == 0 ? purpleColor : disabledColor),
+            ),
+            onTap: () {
+              setState(() {
+                _index = 0;
+              });
+              controller.jumpToPage(0);
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.chat,
+              color: _index == 1 ? purpleColor : disabledColor,
+            ),
+            title: Text(
+              'Chat',
+              style:
+                  TextStyle(color: _index == 1 ? purpleColor : disabledColor),
+            ),
+            onTap: () {
+              setState(() {
+                _index = 1;
+              });
+              controller.jumpToPage(1);
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.add,
+              color: _index == 2 ? purpleColor : disabledColor,
+              size: 30,
+            ),
+            title: Text(
+              'Add',
+              style:
+                  TextStyle(color: _index == 2 ? purpleColor : disabledColor),
+            ),
+            onTap: () {
+              setState(() {
+                _index = 2;
+              });
+              controller.jumpToPage(2);
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              CupertinoIcons.photo_camera_solid,
+              color: _index == 3 ? purpleColor : disabledColor,
+            ),
+            title: Text(
+              'My Posts',
+              style:
+                  TextStyle(color: _index == 3 ? purpleColor : disabledColor),
+            ),
+            onTap: () {
+              setState(() {
+                _index = 3;
+              });
+              controller.jumpToPage(3);
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              CupertinoIcons.person_alt,
+              color: _index == 4 ? purpleColor : disabledColor,
+              size: 30,
+            ),
+            title: Text(
+              'Profile',
+              style:
+                  TextStyle(color: _index == 4 ? purpleColor : disabledColor),
+            ),
+            onTap: () {
+              setState(() {
+                _index = 4;
+              });
+              controller.jumpToPage(4);
+              Navigator.pop(context);
+            },
+          ),
+
+          // Add other options for the remaining screens here
+        ],
+      ),
+    );
+  }
+
+//********************************************************************************* */
+  Widget myListViewWidgetForWeb() {
+    return ListView(
+      padding: EdgeInsets.zero,
+      children: [
+        SizedBox(
+          height: screenHeight(context) * 0.168,
+          child: Center(
+            child: Row(
+              children: [
+                Flexible(
+                  child: FittedBox(
+                    child: Text(
+                      'ICD DUKAAN',
+                      style: TextStyle(
+                          color: whiteColor,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Times'),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Divider(
+          color: greyColor,
+        ),
+        ListTile(
+          tileColor: blackColor,
+          leading: Icon(
+            CupertinoIcons.house_fill,
+            color: _index == 0 ? purpleColor : disabledColor,
+            size: 30,
+          ),
+          title: Text(
+            'Home',
+            style: TextStyle(color: _index == 0 ? purpleColor : disabledColor),
+          ),
+          onTap: () {
+            setState(() {
+              _index = 0;
+            });
+            controller.jumpToPage(0);
+            // Navigator.pop(context);
+          },
+        ),
+        Divider(
+          color: greyColor,
+          height: 1,
+        ),
+        ListTile(
+          tileColor: blackColor,
+          leading: Icon(
+            Icons.chat,
+            color: _index == 1 ? purpleColor : disabledColor,
+          ),
+          title: Text(
+            'Chat',
+            style: TextStyle(color: _index == 1 ? purpleColor : disabledColor),
+          ),
+          onTap: () {
+            setState(() {
+              _index = 1;
+            });
+            controller.jumpToPage(1);
+            // Navigator.pop(context);
+          },
+        ),
+        Divider(
+          color: greyColor,
+          height: 1,
+        ),
+        ListTile(
+          tileColor: blackColor,
+          leading: Icon(
+            Icons.add,
+            color: _index == 2 ? purpleColor : disabledColor,
+            size: 30,
+          ),
+          title: Text(
+            'Add',
+            style: TextStyle(color: _index == 2 ? purpleColor : disabledColor),
+          ),
+          onTap: () {
+            setState(() {
+              _index = 2;
+            });
+            controller.jumpToPage(2);
+            // Navigator.pop(context);
+          },
+        ),
+        Divider(
+          color: greyColor,
+          height: 1,
+        ),
+        ListTile(
+          tileColor: blackColor,
+          leading: Icon(
+            CupertinoIcons.photo_camera_solid,
+            color: _index == 3 ? purpleColor : disabledColor,
+          ),
+          title: Text(
+            'My Posts',
+            style: TextStyle(color: _index == 3 ? purpleColor : disabledColor),
+          ),
+          onTap: () {
+            setState(() {
+              _index = 3;
+            });
+            controller.jumpToPage(3);
+            // Navigator.pop(context);
+          },
+        ),
+        Divider(
+          color: greyColor,
+          height: 1,
+        ),
+        ListTile(
+          tileColor: blackColor,
+          leading: Icon(
+            CupertinoIcons.person_alt,
+            color: _index == 4 ? purpleColor : disabledColor,
+            size: 30,
+          ),
+          title: Text(
+            'Profile',
+            style: TextStyle(color: _index == 4 ? purpleColor : disabledColor),
+          ),
+          onTap: () {
+            setState(() {
+              _index = 4;
+            });
+            controller.jumpToPage(4);
+            // Navigator.pop(context);
+          },
+        ),
+        Divider(
+          color: greyColor,
+          height: 1,
+        ),
+      ],
+    );
+  }
+//********************************************************************************* */
 
   Widget _bottomNavigationBar() {
     return Container(

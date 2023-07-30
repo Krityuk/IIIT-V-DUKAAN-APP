@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:icd_kaa_olx/screens/location_screen.dart';
 import 'package:provider/provider.dart';
@@ -42,12 +43,13 @@ class _CategoryListScreenState extends State<CategoryListScreen> {
     return Scaffold(
       backgroundColor: blackColor,
       appBar: AppBar(
+        toolbarHeight: kIsWeb ? screenHeight(context) * 0.159 : null,
         backgroundColor: blackColor,
         elevation: 0,
         iconTheme: IconThemeData(color: whiteColor),
         title: Text(
           'Select Category',
-          style: TextStyle(color: redColor),
+          style: TextStyle(color: redColor, fontFamily: 'Times'),
         ),
       ),
       body: _body(categoryProvider),

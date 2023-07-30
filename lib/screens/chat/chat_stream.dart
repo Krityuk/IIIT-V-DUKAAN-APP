@@ -150,7 +150,8 @@ class _ChatStreamState extends State<ChatStream> {
                                 );
                               }),
                         ),
-                      )
+                      ),
+                      SizedBox(height: screenHeight(context)*0.11)
                     ],
                   )
                 : Container();

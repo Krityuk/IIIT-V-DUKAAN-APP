@@ -92,62 +92,64 @@ class _ProductCardState extends State<ProductCard> {
           child: Stack(
             children: [
               Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: Image.network(
-                        widget.data['images'][0],
-                        width: 120,
-                        height: 120,
-                        fit: BoxFit.fill,
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: Image.network(
+                          widget.data['images'][0],
+                          width: 120,
+                          height: 120,
+                          fit: BoxFit.fill,
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      '₹ ${widget.formattedPrice}',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
+                      const SizedBox(
+                        height: 10,
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 4),
-                      child: Text(
-                        widget.data['descr'],
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 3,
+                      Text(
+                        '₹ ${widget.formattedPrice}',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    // Row(  // NOTE YAHA PR ADDRESS YA PHONE NO MAT DO WARNA KHARIDNE WALE KO YAHI SE ROOM NO PATA CHAL JAEGA TO VO CALL WALA FEATURE USE KREGA HI NAI
-                    //   mainAxisSize: MainAxisSize.min,
-                    //   children: [
-                    //     const Icon(
-                    //       Icons.location_pin,
-                    //       size: 14,
-                    //     ),
-                    //     const SizedBox(
-                    //       width: 3,
-                    //     ),
-                    //     Flexible(
-                    //       child: Text(
-                    //         'Room No: $address',
-                    //         maxLines: 2,
-                    //         overflow: TextOverflow.ellipsis,
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
-                  ],
+                      Padding(
+                        padding: const EdgeInsets.only(left: 4),
+                        child: Text(
+                          widget.data['descr'],
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 3,
+                        ),
+                      ),
+                      // Row(  // NOTE YAHA PR ADDRESS YA PHONE NO MAT DO WARNA KHARIDNE WALE KO YAHI SE ROOM NO PATA CHAL JAEGA TO VO CALL WALA FEATURE USE KREGA HI NAI
+                      //   mainAxisSize: MainAxisSize.min,
+                      //   children: [
+                      //     const Icon(
+                      //       Icons.location_pin,
+                      //       size: 14,
+                      //     ),
+                      //     const SizedBox(
+                      //       width: 3,
+                      //     ),
+                      //     Flexible(
+                      //       child: Text(
+                      //         'Room No: $address',
+                      //         maxLines: 2,
+                      //         overflow: TextOverflow.ellipsis,
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
+                    ],
+                  ),
                 ),
               ),
               Positioned(
-                  right: 0,
-                  bottom: 0,
+                  right: -10,
+                  bottom: 18,
                   child: IconButton(
                       onPressed: () {
                         setState(() {

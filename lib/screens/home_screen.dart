@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart'; //carousel_slider is for 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:icd_kaa_olx/screens/category/category_widget.dart';
@@ -61,7 +62,10 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         backgroundColor: blackColor,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(screenHeight(context) * 0.1),
+          // toolbarHeight: kIsWeb ? screenHeight(context) * 0.115 : null,
+          preferredSize: kIsWeb
+              ? Size.fromHeight(screenHeight(context) * 0.167)
+              : Size.fromHeight(screenHeight(context) * 0.1),
           child: MainAppBarWithSearch(
               controller: searchController, focusNode: searchNode),
         ),
@@ -101,58 +105,63 @@ class _HomeScreenState extends State<HomeScreen> {
                   //************************************************ */
                   const CategoryWidget(),
                   //************************************************ */
-                  FutureBuilder(
-                    future: downloadBannerImageUrlList(),
-                    //this func returns list of img urls
-                    //future me bas ek func dalte h jo ki kuchh return krta ho,us returned item ko snapshot bolenge like agar koi list return kiya ya koi object return kiya,
-                    //fir snapshot[index] for list and snapshot.mobile krke unko use kr pate h
-                    builder: (BuildContext context,
-                        AsyncSnapshot<List<String>> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return SizedBox(
-                          height: screenHeight(context) * 0.22,
-                          child: Center(
-                              child: CircularProgressIndicator(
-                            color: secondaryColor,
-                          )),
-                        );
-                      } else {
-                        if (snapshot.hasError) {
+                  ConstrainedBox(
+                    constraints:
+                        const BoxConstraints(maxHeight: 400, maxWidth: 600),
+                    child: FutureBuilder(
+                      future: downloadBannerImageUrlList(),
+                      //this func returns list of img urls
+                      //future me bas ek func dalte h jo ki kuchh return krta ho,us returned item ko snapshot bolenge like agar koi list return kiya ya koi object return kiya,
+                      //fir snapshot[index] for list and snapshot.mobile krke unko use kr pate h
+                      builder: (BuildContext context,
+                          AsyncSnapshot<List<String>> snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
                           return SizedBox(
                             height: screenHeight(context) * 0.22,
-                            child: const Center(
-                              child: Text('Facing issue in banner loading'),
-                            ),
+                            child: Center(
+                                child: CircularProgressIndicator(
+                              color: secondaryColor,
+                            )),
                           );
                         } else {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            child: CarouselSlider.builder(
-                              itemCount: snapshot.data!.length,
-                              options: CarouselOptions(
-                                autoPlay: true,
-                                autoPlayCurve: Curves.bounceOut,
-                                viewportFraction: 0.95,
-                                enlargeCenterPage: true,
-                                // Make the current slide larger
-                                aspectRatio: 16 / 9,
-                                // Set the aspect ratio of the slide
+                          if (snapshot.hasError) {
+                            return SizedBox(
+                              height: screenHeight(context) * 0.22,
+                              child: const Center(
+                                child: Text('Facing issue in banner loading'),
                               ),
-                              itemBuilder: (context, index, realIdx) {
-                                return ClipRRect(
-                                  borderRadius: BorderRadius.circular(16),
-                                  child: CachedNetworkImage(
-                                    width: double.infinity,
-                                    imageUrl: snapshot.data![index],
-                                    fit: BoxFit.fill,
-                                  ),
-                                );
-                              },
-                            ),
-                          );
+                            );
+                          } else {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              child: CarouselSlider.builder(
+                                itemCount: snapshot.data!.length,
+                                options: CarouselOptions(
+                                  autoPlay: true,
+                                  autoPlayCurve: Curves.bounceOut,
+                                  viewportFraction: 0.95,
+                                  enlargeCenterPage: true,
+                                  // Make the current slide larger
+                                  aspectRatio: 16 / 9,
+                                  // Set the aspect ratio of the slide
+                                ),
+                                itemBuilder: (context, index, realIdx) {
+                                  return ClipRRect(
+                                    borderRadius: BorderRadius.circular(16),
+                                    child: CachedNetworkImage(
+                                      width: double.infinity,
+                                      imageUrl: snapshot.data![index],
+                                      fit: BoxFit.fill,
+                                    ),
+                                  );
+                                },
+                              ),
+                            );
+                          }
                         }
-                      }
-                    },
+                      },
+                    ),
                   ),
                   //************************************************ */
                 ],

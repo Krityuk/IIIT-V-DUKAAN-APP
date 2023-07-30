@@ -146,8 +146,7 @@ class _UserFormReviewState extends State<UserFormReview> {
                   ListTile(
                     leading: kIsWeb
                         ? null
-                        : Image.network(
-                            categoryProvider.formData['images'][0]),
+                        : Image.network(categoryProvider.formData['images'][0]),
                     title: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -429,33 +428,23 @@ class _UserFormReviewState extends State<UserFormReview> {
                               builder: (context) =>
                                   const LocationScreen(popToUserForm: true)));
                     },
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextFormField(
-                              focusNode: _addressNode,
-                              enabled: false,
-                              controller: _addressController,
-                              validator: (value) {
-                                return checkNullEmptyValidation(
-                                    value, 'your address');
-                              },
-                              minLines: 2,
-                              maxLines: 4,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                labelText: 'Address',
-                                labelStyle: TextStyle(
-                                  color: greyColor,
-                                  fontSize: 14,
-                                ),
-                                errorStyle: const TextStyle(
-                                    color: Colors.red, fontSize: 10),
-                                contentPadding: const EdgeInsets.all(15),
-                              )),
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      decoration: BoxDecoration(border: Border.all()),
+                      child: Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                'Edit PhoneNo | Address here',
+                                style: TextStyle(color: primaryColor),
+                              ),
+                            ),
+                            const Icon(Icons.arrow_forward_ios)
+                          ],
                         ),
-                        const Icon(Icons.arrow_forward_ios)
-                      ],
+                      ),
                     ),
                   ),
                 ],

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -26,11 +27,12 @@ class _MyPostScreenState extends State<MyPostScreen> {
       child: Scaffold(
         backgroundColor: greyColor,
         appBar: AppBar(
+          toolbarHeight: kIsWeb ? screenHeight(context) * 0.115 : null,
           backgroundColor: blackColor,
           elevation: 0,
           title: Text(
             'My Posts',
-            style: TextStyle(color: redColor),
+            style: TextStyle(color: redColor, fontFamily: 'Times'),
           ),
           bottom: TabBar(indicatorColor: secondaryColor, tabs: const [
             Tab(
