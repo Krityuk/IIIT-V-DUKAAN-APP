@@ -1,8 +1,17 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
+import 'dart:convert';
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:icd_kaa_olx/screens/chat/chat_stream.dart';
 import 'package:provider/provider.dart';
+
+import 'package:icd_kaa_olx/screens/chat/chat_stream.dart';
 // ignore: depend_on_referenced_packages
 import 'package:url_launcher/url_launcher.dart';
+// ignore: depend_on_referenced_packages
+import 'package:http/http.dart' as http;
 
 import '../../constants/colors.dart';
 import '../../constants/widgets.dart';
@@ -54,12 +63,59 @@ class _UserChatScreenState extends State<UserChatScreen> {
 
       firebaseUser.createChat(chatroomId: widget.chatroomId, message: message);
       msgController.clear();
+      //
+      // var productProvider = Provider.of<ProductProvider>(context);
+      // log(productProvider.sellerDetails!['name']);
+      // log(productProvider.sellerDetails!['pushTokenForMsging']);
+      // try {
+      //   sendPushNotification(firebaseUser.user!.uid,
+      //       sellerDetails['pushTokenForMsging'], sellerDetails['name']);
+      // } catch (e) {
+      //   debugPrint(
+      //       '${e.toString()}  error in firebase notification sending     😎😎😎😎😎😎😎😎');
+      // }
+    }
+  }
+
+  // msg sender ki auth uid de rha and msg receiver ka fcmPushToken kr de rha
+  sendPushNotification(
+      String senderUid, String recipientFcmPushToken, String name) async {
+    // Construct the notification message
+    final body = {
+      // "to": recipientFcmPushToken,
+      "to":
+          "flTtl-t4S0q_dMmp13lo4m:APA91bHL0qp6swiSaRZ4PbEsqNK1j5qVU8EYvb-I2vuTGan1auxDuKnRSwQGEgOvtqnmDVFAQ2eUvS4OqNNH6QlpZUQV9U2cNLwAHk6vxienI7aY-qxmIJKKKAQQ07BRqOgxmi5bA7TO",
+      "notification": {"title": name, "body": "Sent You A Msg"}
+    };
+
+    // Send the notification
+    try {
+      // await FirebaseMessaging.instance.send(message);
+      var response = await http.post(
+        Uri.parse('https://fcm.googleapis.com/fcm/send'),
+        //THIS IS A SPECIAL LINK FOR FCM MESSENGING
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.authorizationHeader:
+              'key=AAAAbYzxbIA:APA91bG1cbbYIgibk0ZZ4sAeONsMsYZzo5M48pS5rNEr_q1YlNvPm-EQ4B5FrtztAOMr7QnQ014KRCitR13nw0zu0JEazOOsFUJIrYnqxRa2x4vc88bly2oj_4w3ERgTqVtSauGLFmoO'
+          // above key is server key, its associated to firebase project, go to settings->Cloud Msg API for getting this key
+          // (or see my bookmarked video for sending notifications in chrome)
+        },
+        body: jsonEncode(body),
+      );
+      log("${response.statusCode} is your status code");
+      log(response.body);
+
+      debugPrint('Push notification sent successfully.');
+    } catch (e) {
+      debugPrint('Error sending push notification: ${e.toString()}');
     }
   }
 
   @override
   void initState() {
     super.initState();
+    debugPrint('Chat Screen Opened       😎😎😎😎😎😎😎😎');
   }
 
   @override
@@ -167,7 +223,9 @@ class _UserChatScreenState extends State<UserChatScreen> {
                   Visibility(
                     visible: send,
                     child: IconButton(
-                      onPressed: sendMessage,
+                      onPressed: () {
+                        sendMessage();
+                      },
                       icon: const Icon(Icons.send),
                     ),
                   ),

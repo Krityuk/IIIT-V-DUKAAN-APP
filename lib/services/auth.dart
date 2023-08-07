@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -23,7 +25,6 @@ Future<bool> isEmailExists(String email) async {
 }
 
 class Auth {
-  // final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final storage = const FlutterSecureStorage();
   User? currentUser = FirebaseAuth.instance.currentUser;
   CollectionReference users = FirebaseFirestore.instance.collection('users');
@@ -35,6 +36,25 @@ class Auth {
       FirebaseFirestore.instance.collection('messages');
   CollectionReference usersWhoAreReported =
       FirebaseFirestore.instance.collection('users_whoAreReported');
+
+//************************************************************************ */
+  FirebaseMessaging firebasemsging = FirebaseMessaging.instance;
+
+  Future<String?> getFirebaseMsgToken() async {
+    await firebasemsging.requestPermission();
+    String? myToken;
+    await firebasemsging.getToken().then((token) async {
+      if (token != null) {
+        await users.doc(currentUser!.uid).update({"pushTokenForMsging": token});
+        log('$token is the pushTokens  😎😎😎');
+        debugPrint('pushTokens updated into firestore  😎😎😎');
+        myToken = token;
+      } else {
+        debugPrint('not got pushToken       😎😎😎😎😎😎😎😎');
+      }
+    });
+    return myToken;
+  }
 
   // NOTE:
   // Future<void> getAdminCredentialPhoneNumber(BuildContext context, user) async {

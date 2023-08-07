@@ -9,6 +9,7 @@ import 'package:icd_kaa_olx/screens/profile_screen.dart';
 import 'package:dot_navigation_bar/dot_navigation_bar.dart';
 
 import '../constants/colors.dart';
+import '../services/auth.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   static const screenId = 'main_nav_screen';
@@ -29,6 +30,20 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   ];
   PageController controller = PageController();
   int _index = 0;
+  Auth myAuthService = Auth();
+  String? pushToken;
+
+  @override
+  void initState() {
+    super.initState();
+    debugPrint('MainNavScreen Screen Opened       😎😎😎😎😎😎😎😎');
+    getFirebaseMsgingToken();
+  }
+
+  getFirebaseMsgingToken() async {
+    pushToken = await myAuthService.getFirebaseMsgToken();
+  }// IT updates firebasemsging token into the firestore collection('users') for the current account
+  // NOW users.doc(uid)['pushToken']
 
   @override
   Widget build(BuildContext context) {
