@@ -63,6 +63,7 @@ dependencies:
   search_page: ^2.3.0
   firebase_app_check: ^0.1.5+1
   firebase_messaging: ^14.6.5
+  flutter_notification_channel: ^2.0.0
 
 flutter_icons:
   android: true

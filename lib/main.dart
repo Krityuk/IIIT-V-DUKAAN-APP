@@ -1,8 +1,8 @@
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_app_check/firebase_app_check.dart';
 
 import 'package:icd_kaa_olx/constants/colors.dart';
 import 'package:icd_kaa_olx/firebase_options.dart';
@@ -32,11 +32,11 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  // await FirebaseAppCheck.instance.activate(//this protects storage from spams and bots
-  //   // webRecaptchaSiteKey: 'recaptcha-v3-site-key'
-  //   //Replacing 'recaptcha-v3-site-key' with your actual reCAPTCHA v3 site keyis optional
-  //   // if i dont create and my own recaptcha key then firebase would be using its default firebase protection
-  // );
+  await FirebaseAppCheck.instance.activate(//this protects storage from spams and bots
+    // webRecaptchaSiteKey: 'recaptcha-v3-site-key'
+    //Replacing 'recaptcha-v3-site-key' with your actual reCAPTCHA v3 site keyis optional
+    // if i dont create and my own recaptcha key then firebase would be using its default firebase protection
+  );
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
       create: (_) => CategoryProvider(),

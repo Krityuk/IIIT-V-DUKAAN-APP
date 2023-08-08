@@ -1,12 +1,17 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:icd_kaa_olx/constants/colors.dart';
 import 'package:icd_kaa_olx/constants/widgets.dart';
+import 'package:icd_kaa_olx/provider/product_provider.dart';
 import 'package:icd_kaa_olx/screens/chat/user_chat_screen.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 // import '../../constants/colors.dart';
 import '../../services/auth.dart';
+import '../../services/global.dart';
 import '../../services/user.dart';
 
 class ChatCard extends StatefulWidget {
@@ -23,12 +28,14 @@ class _ChatCardState extends State<ChatCard> {
   Auth authService = Auth();
   //
   DocumentSnapshot? productData;
+  DocumentSnapshot? sellerData;
   String? lastChatDate = '';
 
 //******************************************************************************************** */
   @override
   void initState() {
     getProductDetails(); //chat_card bnte hi initstate me hi pehle productData and lastChatDate me value aa gyi
+    getSellerDetails();
     getChatTime();
     super.initState();
   }
@@ -42,6 +49,24 @@ class _ChatCardState extends State<ChatCard> {
         productData = value; //YAHA SETSTATE KI JGH AWAIT TRY KRNA
       });
     });
+  }
+
+  getSellerDetails() {
+    firebaseUser
+        .getSellerData(widget.chatsDoc['productDetails']['seller'])
+        .then((value) {
+      setState(() {
+        sellerData = value;
+      });
+    });
+  }
+
+  setChatUsers() {
+    log("SetChatUsers func here");
+    Global.ChatUsers.add(widget.chatsDoc['users'][0]);
+    Global.ChatUsers.add(widget.chatsDoc['users'][1]);
+    log(widget.chatsDoc['users'][0]);
+    log(widget.chatsDoc['users'][1]);
   }
 
 //******************************************************************************************** */
@@ -66,6 +91,7 @@ class _ChatCardState extends State<ChatCard> {
 // THESE CHAT CARDS ARE THE CARDS FOR MAIN CHAT SCREEN, THESE ARE NOT THE CHAT CARDS OF USERCHATSCREEN
   @override
   Widget build(BuildContext context) {
+    var productProvider = Provider.of<ProductProvider>(context);
     if (productData == null) {
       return Container();
     } else {
@@ -91,12 +117,16 @@ class _ChatCardState extends State<ChatCard> {
                 children: [
                   // 1
                   ListTile(
-                    onTap: () {
+                    onTap: () async {
+                      await setChatUsers();
+                      productProvider.setSellerDetails(sellerData);
                       authService.messages
                           .doc(widget.chatsDoc['chatroomId'])
                           .update({
                         'read': 'true',
                       });
+                      log(productProvider.sellerDetails!['mobile']);
+
                       Navigator.push(
                           context,
                           MaterialPageRoute(
