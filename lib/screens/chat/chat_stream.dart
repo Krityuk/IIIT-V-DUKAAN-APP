@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -23,6 +25,8 @@ class _ChatStreamState extends State<ChatStream> {
   DocumentSnapshot? chatDocument;
   Auth authService = Auth();
   UserService firebaseUser = UserService();
+  final ScrollController _scrollController = ScrollController();
+
 //
 //***************************************************************************************** */
   @override
@@ -37,6 +41,12 @@ class _ChatStreamState extends State<ChatStream> {
       setState(() {
         chatDocument = value;
       });
+    });
+
+    Timer(const Duration(milliseconds: 500), () {
+      debugPrint('Timer ran       😎😎😎😎😎😎😎😎');
+      //scroll chatstream to downmost message initially
+      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
     });
   }
 
@@ -82,6 +92,7 @@ class _ChatStreamState extends State<ChatStream> {
                         child: Container(
                           color: disabledColor.withOpacity(0.3),
                           child: ListView.builder(
+                              controller: _scrollController,
                               itemCount: snapshot.data!.docs.length,
                               itemBuilder: (BuildContext context, int index) {
                                 String sentBy =
@@ -151,7 +162,7 @@ class _ChatStreamState extends State<ChatStream> {
                               }),
                         ),
                       ),
-                      SizedBox(height: screenHeight(context)*0.11)
+                      SizedBox(height: screenHeight(context) * 0.11)
                     ],
                   )
                 : Container();
