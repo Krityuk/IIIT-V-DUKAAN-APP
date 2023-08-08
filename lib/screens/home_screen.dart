@@ -30,17 +30,18 @@ class _HomeScreenState extends State<HomeScreen> {
   //TextEditingController and FocusNode are created to manage the search button of the app
   //
 
-  Future<List<String>> downloadBannerImageUrlList() async {
-    List<String> bannerUrlList = [];
-    final ListResult storageRef =
-        await FirebaseStorage.instance.ref().child('banner').listAll();
-    List<Reference> bannerRef = storageRef.items;
-    await Future.forEach<Reference>(bannerRef, (image) async {
-      final String fileUrl = await image.getDownloadURL();
-      bannerUrlList.add(fileUrl);
-    });
-    return bannerUrlList;
-  }
+  // HERE IS THE FUNC TO FETCH IMAGES FROM STORAGE AND ONE USE THEM THROUGH FUTUREBUILDER AS SHOWN BELOW
+  // Future<List<String>> downloadBannerImageUrlList() async {
+  //   List<String> bannerUrlList = [];
+  //   final ListResult storageRef =
+  //       await FirebaseStorage.instance.ref().child('banner').listAll();
+  //   List<Reference> bannerRef = storageRef.items;
+  //   await Future.forEach<Reference>(bannerRef, (image) async {
+  //     final String fileUrl = await image.getDownloadURL();
+  //     bannerUrlList.add(fileUrl);
+  //   });
+  //   return bannerUrlList;
+  // }
 
   @override
   void initState() {
@@ -108,59 +109,87 @@ class _HomeScreenState extends State<HomeScreen> {
                   ConstrainedBox(
                     constraints:
                         const BoxConstraints(maxHeight: 400, maxWidth: 600),
-                    child: FutureBuilder(
-                      future: downloadBannerImageUrlList(),
-                      //this func returns list of img urls
-                      //future me bas ek func dalte h jo ki kuchh return krta ho,us returned item ko snapshot bolenge like agar koi list return kiya ya koi object return kiya,
-                      //fir snapshot[index] for list and snapshot.mobile krke unko use kr pate h
-                      builder: (BuildContext context,
-                          AsyncSnapshot<List<String>> snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return SizedBox(
-                            height: screenHeight(context) * 0.22,
-                            child: Center(
-                                child: CircularProgressIndicator(
-                              color: secondaryColor,
-                            )),
+                    // child: FutureBuilder(
+                    //   future: downloadBannerImageUrlList(),
+                    //   //this func returns list of img urls
+                    //   //future me bas ek func dalte h jo ki kuchh return krta ho,us returned item ko snapshot bolenge like agar koi list return kiya ya koi object return kiya,
+                    //   //fir snapshot[index] for list and snapshot.mobile krke unko use kr pate h
+                    //   builder: (BuildContext context,
+                    //       AsyncSnapshot<List<String>> snapshot) {
+                    //     if (snapshot.connectionState ==
+                    //         ConnectionState.waiting) {
+                    //       return SizedBox(
+                    //         height: screenHeight(context) * 0.22,
+                    //         child: Center(
+                    //             child: CircularProgressIndicator(
+                    //           color: secondaryColor,
+                    //         )),
+                    //       );
+                    //     } else {
+                    //       if (snapshot.hasError) {
+                    //         return SizedBox(
+                    //           height: screenHeight(context) * 0.22,
+                    //           child: const Center(
+                    //             child: Text('Facing issue in banner loading'),
+                    //           ),
+                    //         );
+                    //       } else {
+                    //         return Padding(
+                    //           padding: const EdgeInsets.symmetric(vertical: 8),
+                    //           child: CarouselSlider.builder(
+                    //             itemCount: snapshot.data!.length,
+                    //             options: CarouselOptions(
+                    //               autoPlay: true,
+                    //               autoPlayCurve: Curves.bounceOut,
+                    //               viewportFraction: 0.95,
+                    //               enlargeCenterPage: true,
+                    //               // Make the current slide larger
+                    //               aspectRatio: 16 / 9,
+                    //               // Set the aspect ratio of the slide
+                    //             ),
+                    //             itemBuilder: (context, index, realIdx) {
+                    //               return ClipRRect(
+                    //                 borderRadius: BorderRadius.circular(16),
+                    //                 child: CachedNetworkImage(
+                    //                   width: double.infinity,
+                    //                   imageUrl: snapshot.data![index],
+                    //                   fit: BoxFit.fill,
+                    //                 ),
+                    //               );
+                    //             },
+                    //           ),
+                    //         );
+                    //       }
+                    //     }
+                    //   },
+                    // ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: CarouselSlider.builder(
+                        itemCount:
+                            4, // 4 ADVERTISEMENTS SHOW KR RHA HU THROUGH IMAGE.ASSET
+                        options: CarouselOptions(
+                          autoPlay: true,
+                          autoPlayCurve: Curves.bounceOut,
+                          viewportFraction: 0.95,
+                          enlargeCenterPage: true,
+                          // Make the current slide larger
+                          aspectRatio: 16 / 9,
+                          // Set the aspect ratio of the slide
+                        ),
+                        itemBuilder: (context, index, realIdx) {
+                          String assetPath =
+                              'assets/advertisements/adv$index.png';
+                          return ClipRRect(
+                            borderRadius: BorderRadius.circular(16),
+                            child: Image.asset(
+                              assetPath,
+                              width: double.infinity,
+                              fit: BoxFit.fill,
+                            ),
                           );
-                        } else {
-                          if (snapshot.hasError) {
-                            return SizedBox(
-                              height: screenHeight(context) * 0.22,
-                              child: const Center(
-                                child: Text('Facing issue in banner loading'),
-                              ),
-                            );
-                          } else {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8),
-                              child: CarouselSlider.builder(
-                                itemCount: snapshot.data!.length,
-                                options: CarouselOptions(
-                                  autoPlay: true,
-                                  autoPlayCurve: Curves.bounceOut,
-                                  viewportFraction: 0.95,
-                                  enlargeCenterPage: true,
-                                  // Make the current slide larger
-                                  aspectRatio: 16 / 9,
-                                  // Set the aspect ratio of the slide
-                                ),
-                                itemBuilder: (context, index, realIdx) {
-                                  return ClipRRect(
-                                    borderRadius: BorderRadius.circular(16),
-                                    child: CachedNetworkImage(
-                                      width: double.infinity,
-                                      imageUrl: snapshot.data![index],
-                                      fit: BoxFit.fill,
-                                    ),
-                                  );
-                                },
-                              ),
-                            );
-                          }
-                        }
-                      },
+                        },
+                      ),
                     ),
                   ),
                   //************************************************ */

@@ -124,15 +124,15 @@ class _ChatCardState extends State<ChatCard> {
                           .doc(widget.chatsDoc['chatroomId'])
                           .update({
                         'read': 'true',
+                      }).then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (builder) => UserChatScreen(
+                                      chatroomId: widget.chatsDoc['chatroomId'],
+                                    )));
                       });
                       log(productProvider.sellerDetails!['mobile']);
-
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (builder) => UserChatScreen(
-                                    chatroomId: widget.chatsDoc['chatroomId'],
-                                  )));
                     },
                     leading: ClipRRect(
                       borderRadius: BorderRadius.circular(16),
@@ -147,14 +147,11 @@ class _ChatCardState extends State<ChatCard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          productData!['title'],
-                          style: TextStyle(
-                              fontWeight: widget.chatsDoc['read'] == true
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
-                              color: widget.chatsDoc['read'] == true
-                                  ? Colors.orangeAccent
-                                  : Colors.tealAccent),
+                          productData!['title'].toString().toUpperCase(),
+                          style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.tealAccent),
                         ),
                         const Divider(
                           height: 5,

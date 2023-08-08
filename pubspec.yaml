@@ -64,6 +64,8 @@ dependencies:
   firebase_app_check: ^0.1.5+1
   firebase_messaging: ^14.6.5
   flutter_notification_channel: ^2.0.0
+  flutter_image_compress: ^2.0.0
+  shared_preferences: ^2.2.0
 
 flutter_icons:
   android: true
@@ -97,6 +99,8 @@ flutter:
     - assets/icons/
     - assets/lottie/
     - assets/gif/
+    - assets/categories/
+    - assets/advertisements/
   
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

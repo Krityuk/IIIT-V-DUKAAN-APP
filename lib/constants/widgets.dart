@@ -4,7 +4,6 @@ import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:icd_kaa_olx/constants/colors.dart';
 
 import '../modals/pop_up_menu_modal.dart';
-import '../screens/chat/chat_screen.dart';
 import '../screens/main_navigation_screen.dart';
 import '../services/user.dart';
 import 'package:fluttertoast/fluttertoast.dart';

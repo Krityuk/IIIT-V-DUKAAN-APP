@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:icd_kaa_olx/screens/welcome_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/colors.dart';
 import '../constants/widgets.dart';
@@ -77,8 +80,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Image.asset(
                   'assets/icons/phonePay.jpg'), // Replace with your image URL
             ),
+            ElevatedButton(
+                style:
+                    ElevatedButton.styleFrom(backgroundColor: Colors.white10),
+                onPressed: () async {
+                  var prefs = await SharedPreferences.getInstance();
+                  // ignore: curly_braces_in_flow_control_structures
+                  setState(() {
+                    (prefs.getBool('songPresent') != false)
+                        ? prefs.setBool('songPresent', false)
+                        : prefs.setBool('songPresent', true);
+                    log("Hiiiiiii");
+                    log("sharedPref is ${prefs.getBool('songPresent')}");
+                    log("Hiiiiiii");
+                    if (prefs.getBool('songPresent') != false) {
+                      customSnackBar(
+                          context: context, content: "April Fool Bnaya 🤣");
+                    }
+                  });
+                },
+                child: const Text('Hidden')),
 
-            SizedBox(height: screenHeight(context) * 0.2),
+            SizedBox(height: screenHeight(context) * 0.1),
           ],
         ),
       ),

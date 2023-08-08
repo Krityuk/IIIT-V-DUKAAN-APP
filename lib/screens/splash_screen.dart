@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:icd_kaa_olx/screens/welcome_screen.dart';
 import '../constants/colors.dart';
 // import 'package:audioplayers/audioplayers.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   static const String screenId = 'splash_screen'; //this line
@@ -21,6 +23,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   final assetsAudioPlayer = AssetsAudioPlayer();
+  // bool? songPresent;
 
   @override
   void initState() {
@@ -31,7 +34,15 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void _playSong() async {
     try {
-      await assetsAudioPlayer.open(Audio('assets/gif/clg.mp3'));
+      var prefs = await SharedPreferences.getInstance();
+      // ABHI songPresent == NULL HAI,
+      // AGAR PROFILE SCREEN KA VO BUTTON DABA DIYA TO songPresent = FALSE HO JAEGA
+      log("Hiiiiiii");
+      log("sharedPref is ${prefs.getBool('songPresent')}");
+      log("Hiiiiiii");
+      await assetsAudioPlayer.open(prefs.getBool('songPresent') == false
+          ? Audio('assets/gif/beep.mp3')
+          : Audio('assets/gif/clg.mp3'));
       debugPrint('PLaying song       😎😎😎😎😎😎😎😎');
     } catch (e) {
       debugPrint('NOT NOT Playing       😎😎😎😎😎😎😎😎');
@@ -39,8 +50,13 @@ class _SplashScreenState extends State<SplashScreen> {
     }
   }
 
-  permissionBasedNavigationFunc() {
-    Timer(const Duration(seconds: 6), () async {
+  permissionBasedNavigationFunc() async {
+    var prefs = await SharedPreferences.getInstance();
+    Timer(
+        Duration(
+            milliseconds: (prefs.getBool('songPresent') == false)
+                ? 1500
+                : 6000), () async {
       FirebaseAuth.instance.authStateChanges().listen((User? user) async {
         if (user == null) {
           Navigator.pushReplacementNamed(context, WelcomeScreen.screenId);

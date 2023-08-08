@@ -1,4 +1,6 @@
+import 'dart:developer';
 import 'dart:io'; //File? _image; isko bnane ke liye
+import 'dart:typed_data';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:galleryimage/galleryimage.dart';
@@ -10,6 +12,7 @@ import 'package:provider/provider.dart';
 import '../constants/colors.dart';
 import '../constants/widgets.dart';
 import '../provider/category_provider.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 class ImagePickerWidget extends StatefulWidget {
   const ImagePickerWidget({Key? key}) : super(key: key);
@@ -163,13 +166,41 @@ Future<String> uploadFile(BuildContext context, String filePath) async {
   String imageName = 'product_images/${DateTime.now().microsecondsSinceEpoch}';
   String downloadUrl = '';
   final file = File(filePath);
+ // COMPRESSING IMAGE SIZE HERE TO HAVE LESS STORAGE IN FIREBASE STORAGE
   try {
-    await FirebaseStorage.instance.ref(imageName).putFile(file);
-    downloadUrl =
-        await FirebaseStorage.instance.ref(imageName).getDownloadURL();
-    debugPrint(downloadUrl);
-  } on FirebaseException catch (e) {
-    customSnackBar(context: context, content: e.code);
+    // Compress the image using HEIC format if possible
+    Uint8List? result = await FlutterImageCompress.compressWithFile(filePath,
+        format: CompressFormat.heic, quality: 75);
+
+    // Upload the compressed image to Firebase Storage
+    if (result != null) {
+      // Create a compressed image file from the Uint8List
+      final compressedFile = File('${filePath}_compressed.heic');
+      await compressedFile.writeAsBytes(result);
+
+      // Upload the compressed image to Firebase Storage
+      await FirebaseStorage.instance.ref(imageName).putFile(compressedFile);
+
+      // Get the download URL of the uploaded image
+      downloadUrl =
+          await FirebaseStorage.instance.ref(imageName).getDownloadURL();
+      debugPrint('IMAGE COMPRESSED SUCCESSFULLY       😎😎😎😎😎😎😎😎');
+
+      // Delete the temporary compressed image file
+      compressedFile.delete();
+    } else {
+      // If compression fails or unsupported, upload the original image
+      await FirebaseStorage.instance.ref(imageName).putFile(file);
+      downloadUrl =
+          await FirebaseStorage.instance.ref(imageName).getDownloadURL();
+      debugPrint('IMAGE NOT COMPRESSED     😎😎😎😎😎😎😎😎');
+    }
+
+    log('Download URL: $downloadUrl');
+  } catch (e) {
+    log(e.toString());
+    customSnackBar(context: context, content: e.toString());
   }
+
   return downloadUrl;
 }

@@ -89,6 +89,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                       itemCount: snapshot.data!.docs.length,
                       itemBuilder: ((context, index) {
                         var doc = snapshot.data!.docs[index];
+                        String assetPath = 'assets/categories/cat$index.png';
                         return InkWell(
                           onTap: () {
                             categoryProvider.setCategory(doc['category_name']);
@@ -113,8 +114,15 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                                     padding: const EdgeInsets.all(1),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(16),
-                                      child: Image.network(
-                                        doc['img'],
+                                      // child: Image.network(
+                                      //   doc['img'],
+                                      //   width: 60,
+                                      //   height: 60,
+                                      //   fit: BoxFit.fill,
+                                      // ),
+                                      // NOTE Image.asset kr de rhe to get less cost in firebase storage
+                                      child: Image.asset(
+                                        assetPath,
                                         width: 60,
                                         height: 60,
                                         fit: BoxFit.fill,
