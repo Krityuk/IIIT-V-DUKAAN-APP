@@ -78,6 +78,7 @@ class _CategoryListScreenState extends State<CategoryListScreen> {
               itemCount: snapshot.data?.docs.length,
               itemBuilder: ((context, index) {
                 var doc = snapshot.data?.docs[index];
+                String assetPath = 'assets/categories/cat$index.png';
                 return Padding(
                     padding: const EdgeInsets.all(8),
                     child: ListTile(
@@ -104,8 +105,8 @@ class _CategoryListScreenState extends State<CategoryListScreen> {
                           elevation: 4,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(16),
-                            child: Image.network(
-                              doc!['img'],
+                            child: Image.asset(
+                              assetPath,
                               width: 60,
                               height: 80,
                               fit: BoxFit.fill,
@@ -113,7 +114,7 @@ class _CategoryListScreenState extends State<CategoryListScreen> {
                           ),
                         ),
                         title: Text(
-                          doc['category_name'],
+                          doc!['category_name'],
                           style: TextStyle(fontSize: 15, color: whiteColor),
                         ),
                         trailing: Icon(
