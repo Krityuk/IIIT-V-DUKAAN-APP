@@ -147,9 +147,14 @@ class _ChatCardState extends State<ChatCard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          productData!['title'].toString().toUpperCase(),
+                          (productData!['title'].toString()[0] ==
+                                  productData!['title']
+                                      .toString()[0]
+                                      .toLowerCase())
+                              ? productData!['title'].toString().toUpperCase()
+                              : productData!['title'].toString(),
                           style: const TextStyle(
-                              fontSize: 12,
+                              fontSize: 14,
                               fontWeight: FontWeight.bold,
                               color: Colors.tealAccent),
                         ),
