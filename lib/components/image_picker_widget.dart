@@ -170,7 +170,7 @@ Future<String> uploadFile(BuildContext context, String filePath) async {
   try {
     // Compress the image using HEIC format if possible
     Uint8List? result = await FlutterImageCompress.compressWithFile(filePath,
-        format: CompressFormat.heic, quality: 75);
+        format: CompressFormat.heic, quality: 65);
 
     // Upload the compressed image to Firebase Storage
     if (result != null) {

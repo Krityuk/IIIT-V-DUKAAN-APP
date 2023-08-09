@@ -247,8 +247,10 @@ class _CommonFormState extends State<CommonForm> {
                     onTap: () async {
                       debugPrint(
                           '${categoryProvider.imageUploadedUrls.length}   <- categoryProvider.imageUploadedUrls.length   😎😎😎😎😎😎');
-                      return openBottomSheetWidget(
-                          context: context, child: const ImagePickerWidget());
+                      if (categoryProvider.imageUploadedUrls.isEmpty) {
+                        return openBottomSheetWidget(
+                            context: context, child: const ImagePickerWidget());
+                      }
                     },
                     child: Container(
                       alignment: Alignment.center,
@@ -260,7 +262,7 @@ class _CommonFormState extends State<CommonForm> {
                       ),
                       child: Text(
                         categoryProvider.imageUploadedUrls.isNotEmpty
-                            ? 'Upload More Images'
+                            ? 'Press Next Button'
                             : 'Upload Image',
                         style: TextStyle(
                             color: blackColor, fontWeight: FontWeight.bold),

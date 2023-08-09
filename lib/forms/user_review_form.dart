@@ -1,9 +1,15 @@
+import 'dart:convert';
+import 'dart:developer';
+import 'dart:io';
+import 'package:http/http.dart' as http;
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:icd_kaa_olx/services/get_imgurl_from_storage.dart';
 import 'package:provider/provider.dart';
 
 import '../components/common_form_ka_bottom_nav_widget.dart';
@@ -216,9 +222,52 @@ class _UserFormReviewState extends State<UserFormReview> {
                                     'name': _nameController.text,
                                   },
                                   context)
-                              .whenComplete(() {
-                            debugPrint(
-                                'uploading completed       😎😎😎😎😎😎😎😎');
+                              .whenComplete(() async {
+                            debugPrint('uploading completed   😎');
+                            // SEND NOTIFICATION TO ADMIN THAT SOMEONE UPLOADED ITEM
+                            String adminKaFcmToken = '';
+                            // 'cuCw9YN7RPG3wkS-i9GFK9:APA91bF0IpH10kyOgeJQpGASjLqjnTARc9UOj4ovzK5HBQ3wXtenEXL-OOTMb5wST6iXu63DRz3ALRib2qk6IdAAsVJC-W8iAUc2wxyeNtm3TR8pPcZxCnBTjiwf_wRKADJJd2csz9If';
+                            await myAuthService.users
+                                .doc("5eglRMBe4iTx88pViCeL0gP49XX2")
+                                .get()
+                                .then((value) {
+                              adminKaFcmToken = value['pushTokenForMsging'];
+                            }).then((value) async {
+                              log(adminKaFcmToken);
+                              final body = {
+                                "to": adminKaFcmToken,
+                                "notification": {
+                                  "title": _nameController.text,
+                                  "body": "Uploaded An Item"
+                                }
+                              };
+
+                              // Send the notification to admin
+                              try {
+                                var response = await http.post(
+                                  Uri.parse(
+                                      'https://fcm.googleapis.com/fcm/send'),
+                                  //THIS IS A SPECIAL LINK FOR FCM MESSENGING
+                                  headers: {
+                                    HttpHeaders.contentTypeHeader:
+                                        'application/json',
+                                    HttpHeaders.authorizationHeader:
+                                        'key=AAAAbYzxbIA:APA91bG1cbbYIgibk0ZZ4sAeONsMsYZzo5M48pS5rNEr_q1YlNvPm-EQ4B5FrtztAOMr7QnQ014KRCitR13nw0zu0JEazOOsFUJIrYnqxRa2x4vc88bly2oj_4w3ERgTqVtSauGLFmoO'
+                                    // above key is server key, its associated to firebase project, go to settings->Cloud Msg API for getting this key
+                                    // (or see my bookmarked video for sending notifications in chrome)
+                                  },
+                                  body: jsonEncode(body),
+                                );
+                                log("${response.statusCode} is your status code");
+                                log(response.body);
+
+                                debugPrint(
+                                    'Push notification sent successfully.');
+                              } catch (e) {
+                                debugPrint(
+                                    'Error sending push notification: ${e.toString()}');
+                              }
+                            });
                           });
                         },
                         child: const Text(

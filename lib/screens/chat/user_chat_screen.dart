@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:icd_kaa_olx/services/get_imgurl_from_storage.dart';
 import 'package:icd_kaa_olx/services/global.dart';
@@ -72,6 +71,8 @@ class _UserChatScreenState extends State<UserChatScreen> {
       msgController.clear();
       //
       debugPrint("${productProvider.sellerDetails!['name']} is seller");
+
+      // NOTIFICATION OF CHAT MESSAGE KA CODE IS HERE
       debugPrint(
           "${productProvider.sellerDetails!['pushTokenForMsging']} is seller's token\n\n");
       debugPrint('LETS ASSUME KI SELLER KO NOTIFICATION BHEJNA H   😎😎😎😎');

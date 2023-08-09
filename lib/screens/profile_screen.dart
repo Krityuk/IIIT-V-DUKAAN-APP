@@ -1,4 +1,7 @@
+import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
+import 'package:http/http.dart' as http;
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -64,6 +67,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
             //       getCategoryImageUrlsFromStorage();
             //     },
             //     child: const Text('debugPrint Storage images')),
+            // ElevatedButton(
+            //     onPressed: () async {
+            //       String adminKaFcmToken = '';
+            //       await myAuthService.users
+            //           .doc("5eglRMBe4iTx88pViCeL0gP49XX2")
+            //           .get()
+            //           .then((value) {
+            //         adminKaFcmToken = value['pushTokenForMsging'];
+            //       }).then((value) async {
+            //         log(adminKaFcmToken);
+            //         final body = {
+            //           "to": adminKaFcmToken,
+            //           "notification": {
+            //             "title": "KISHORE",
+            //             "body": "Uploaded An Item"
+            //           }
+            //         };
+
+            //         // Send the notification to admin
+            //         try {
+            //           var response = await http.post(
+            //             Uri.parse('https://fcm.googleapis.com/fcm/send'),
+            //             //THIS IS A SPECIAL LINK FOR FCM MESSENGING
+            //             headers: {
+            //               HttpHeaders.contentTypeHeader: 'application/json',
+            //               HttpHeaders.authorizationHeader:
+            //                   'key=AAAAbYzxbIA:APA91bG1cbbYIgibk0ZZ4sAeONsMsYZzo5M48pS5rNEr_q1YlNvPm-EQ4B5FrtztAOMr7QnQ014KRCitR13nw0zu0JEazOOsFUJIrYnqxRa2x4vc88bly2oj_4w3ERgTqVtSauGLFmoO'
+            //               // above key is server key, its associated to firebase project, go to settings->Cloud Msg API for getting this key
+            //               // (or see my bookmarked video for sending notifications in chrome)
+            //             },
+            //             body: jsonEncode(body),
+            //           );
+            //           log("${response.statusCode} is your status code");
+            //           log(response.body);
+
+            //           debugPrint('Push notification sent successfully.');
+            //         } catch (e) {
+            //           debugPrint(
+            //               'Error sending push notification: ${e.toString()}');
+            //         }
+            //       });
+            //     },
+            //     child: const Text('Testing Button For Me')),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
