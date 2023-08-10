@@ -68,9 +68,10 @@ dependencies:
   shared_preferences: ^2.2.0
 
 flutter_icons:
+  image_path_android: "assets/icons/icdicon.png"
+  image_path_ios: "assets/icons/icdicon.png"
   android: true
   ios: true
-  image_path: "assets/icons/app_icon.png"
 
 dev_dependencies:
   flutter_test:

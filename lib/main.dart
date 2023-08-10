@@ -32,11 +32,11 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await FirebaseAppCheck.instance.activate(//this protects storage from spams and bots
-    // webRecaptchaSiteKey: 'recaptcha-v3-site-key'
-    //Replacing 'recaptcha-v3-site-key' with your actual reCAPTCHA v3 site keyis optional
-    // if i dont create and my own recaptcha key then firebase would be using its default firebase protection
-  );
+  // await FirebaseAppCheck.instance.activate(//this protects storage from spams and bots
+  //   // webRecaptchaSiteKey: 'recaptcha-v3-site-key'
+  //   //Replacing 'recaptcha-v3-site-key' with your actual reCAPTCHA v3 site keyis optional
+  //   // if i dont create and my own recaptcha key then firebase would be using its default firebase protection
+  // );
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
       create: (_) => CategoryProvider(),

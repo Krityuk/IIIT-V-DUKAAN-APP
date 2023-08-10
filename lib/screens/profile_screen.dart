@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import, depend_on_referenced_packages
+
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
@@ -11,7 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/colors.dart';
 import '../constants/widgets.dart';
-// ignore: unused_import
+
 import '../services/get_imgurl_from_storage.dart';
 import '../services/user.dart';
 
